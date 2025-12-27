@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijkstra's Algorithm | City Route Planner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>🗺️ City Route Planner</h1>
+                <p>Find the shortest path with Dijkstra's Algorithm!</p>
+            </div>
+        </header>
+
+        <!-- Mode Selection -->
+        <div class="mode-selection">
+            <button class="mode-btn active" data-mode="interactive">
+                <span class="mode-icon">🎮</span>
+                <span class="mode-title">Interactive Mode</span>
+                <span class="mode-desc">Build your own city network and find routes</span>
+            </button>
+            <button class="mode-btn" data-mode="preset">
+                <span class="mode-icon">🏙️</span>
+                <span class="mode-title">Preset Cities</span>
+                <span class="mode-desc">Explore pre-built city networks</span>
+            </button>
+            <button class="mode-btn" data-mode="step-by-step">
+                <span class="mode-icon">👣</span>
+                <span class="mode-title">Step-by-Step</span>
+                <span class="mode-desc">Manual control through algorithm execution</span>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-layout">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h2>⚙️ Controls</h2>
+                
+                <!-- Interactive Mode Controls -->
+                <div class="mode-controls" id="interactiveControls">
+                    <div class="control-section">
+                        <h3>🏢 Add City</h3>
+                        <input type="text" id="cityName" placeholder="City name (e.g., A, B, NYC)" />
+                        <button id="addCityBtn" class="btn btn-secondary">➕ Add City</button>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>🛣️ Add Road</h3>
+                        <select id="fromCity">
+                            <option value="">From City</option>
+                        </select>
+                        <select id="toCity">
+                            <option value="">To City</option>
+                        </select>
+                        <input type="number" id="roadDistance" placeholder="Distance (km)" min="1" value="10" />
+                        <button id="addRoadBtn" class="btn btn-secondary">➕ Add Road</button>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>🎯 Find Route</h3>
+                        <select id="startCity">
+                            <option value="">Start City</option>
+                        </select>
+                        <select id="endCity">
+                            <option value="">End City</option>
+                        </select>
+                        <button id="findPathBtn" class="btn btn-primary">🔍 Find Shortest Path</button>
+                    </div>
+
+                    <div class="control-section">
+                        <button id="clearGraphBtn" class="btn btn-secondary">🗑️ Clear All</button>
+                        <button id="randomGraphBtn" class="btn btn-secondary">🎲 Random Network</button>
+                    </div>
+                </div>
+
+                <!-- Preset Mode Controls -->
+                <div class="mode-controls hidden" id="presetControls">
+                    <div class="preset-grid">
+                        <button class="preset-card" data-preset="simple">
+                            <h4>🏘️ Simple Network</h4>
+                            <p>5 cities, basic connections</p>
+                        </button>
+                        <button class="preset-card" data-preset="complex">
+                            <h4>🌆 Complex City</h4>
+                            <p>8 cities, multiple routes</p>
+                        </button>
+                        <button class="preset-card" data-preset="highway">
+                            <h4>🛣️ Highway System</h4>
+                            <p>10 cities, long distances</p>
+                        </button>
+                        <button class="preset-card" data-preset="metro">
+                            <h4>🚇 Metro Network</h4>
+                            <p>Dense urban connections</p>
+                        </button>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>🎯 Find Route</h3>
+                        <select id="presetStartCity">
+                            <option value="">Start City</option>
+                        </select>
+                        <select id="presetEndCity">
+                            <option value="">End City</option>
+                        </select>
+                        <button id="presetFindPathBtn" class="btn btn-primary">🔍 Find Shortest Path</button>
+                    </div>
+                </div>
+
+                <!-- Step-by-Step Mode Controls -->
+                <div class="mode-controls hidden" id="stepControls">
+                    <div class="step-buttons">
+                        <button id="stepStartBtn" class="btn btn-primary">🚀 Initialize</button>
+                        <button id="nextStepBtn" class="btn btn-secondary" disabled>➡️ Next Step</button>
+                        <button id="stepResetBtn" class="btn btn-secondary">🔄 Reset</button>
+                    </div>
+                    <div class="step-info-box">
+                        <p id="stepDescription">Select a preset city network and click Initialize to begin</p>
+                    </div>
+                </div>
+
+                <!-- Speed Control -->
+                <div class="speed-control">
+                    <label for="animationSpeed">Animation Speed:</label>
+                    <input type="range" id="animationSpeed" min="100" max="2000" value="800" step="100">
+                    <span id="speedLabel">800ms</span>
+                </div>
+
+                <!-- Statistics -->
+                <div class="stats-panel">
+                    <h3>📊 Statistics</h3>
+                    <div class="stat-item">
+                        <span>Cities:</span>
+                        <span id="cityCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Roads:</span>
+                        <span id="roadCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Cities Visited:</span>
+                        <span id="visitedCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Shortest Distance:</span>
+                        <span id="shortestDistance">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Algorithm Steps:</span>
+                        <span id="algorithmSteps">0</span>
+                    </div>
+                </div>
+
+                <!-- Path Result -->
+                <div class="path-result hidden" id="pathResult">
+                    <h3>🎯 Route Found!</h3>
+                    <div id="pathDetails"></div>
+                </div>
+            </div>
+
+            <!-- Visualization Canvas -->
+            <div class="visualization-panel">
+                <h2>🗺️ City Network Map</h2>
+                <div class="canvas-container">
+                    <canvas id="graphCanvas"></canvas>
+                    <div class="canvas-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #667eea;"></div>
+                            <span>Unvisited City</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #fbbf24;"></div>
+                            <span>Current City</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #48bb78;"></div>
+                            <span>Visited City</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #f56565;"></div>
+                            <span>Shortest Path</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #e0e0e0;"></div>
+                            <span>Road</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distance Table -->
+                <div class="distance-table-container">
+                    <h3>📋 Distance Table</h3>
+                    <div id="distanceTable" class="distance-table">
+                        <p class="empty-message">Add cities to see distance calculations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algorithm Explanation -->
+        <div class="explanation-section">
+            <h2>🧠 Dijkstra's Algorithm Explained</h2>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">🎯</div>
+                    <h3>What is Dijkstra's?</h3>
+                    <p>A greedy algorithm that finds the shortest path from a source node to all other nodes in a weighted graph with non-negative edges.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">🔍</div>
+                    <h3>How It Works</h3>
+                    <p>Always visit the unvisited node with the smallest known distance. Update distances to neighbors, then mark as visited. Repeat until destination is reached.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">⚡</div>
+                    <h3>Time Complexity</h3>
+                    <p><strong>O((V + E) log V)</strong> with priority queue, where V = vertices and E = edges. Efficient for sparse graphs!</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">✅</div>
+                    <h3>Why It Works</h3>
+                    <p>Greedy choice property: Once a node is visited, we've found its shortest path. No shorter path exists through unvisited nodes.</p>
+                </div>
+            </div>
+
+            <div class="algorithm-steps">
+                <h3>📝 Algorithm Steps</h3>
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Initialize</h4>
+                            <p>Set distance to source = 0, all others = ∞. Mark all nodes as unvisited.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Select Minimum</h4>
+                            <p>Choose the unvisited node with the smallest distance (greedy choice).</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Update Neighbors</h4>
+                            <p>For each neighbor, calculate: distance[current] + edge_weight. If smaller than current distance, update it.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Mark Visited</h4>
+                            <p>Mark the current node as visited. It will not be checked again.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Repeat</h4>
+                            <p>Repeat steps 2-4 until destination is visited or all reachable nodes are visited.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-example">
+                <h3>💻 Implementation</h3>
+                <div class="code-block">
+                    <pre><code>function dijkstra(graph, start, end) {
+    const distances = {};
+    const visited = new Set();
+    const previous = {};
+    const pq = new PriorityQueue();
+    
+    // Initialize distances
+    for (let node in graph) {
+        distances[node] = Infinity;
+    }
+    distances[start] = 0;
+    pq.enqueue(start, 0);
+    
+    while (!pq.isEmpty()) {
+        const current = pq.dequeue();
+        
+        if (visited.has(current)) continue;
+        if (current === end) break;
+        
+        visited.add(current);
+        
+        // Check all neighbors
+        for (let neighbor of graph[current]) {
+            if (visited.has(neighbor.node)) continue;
+            
+            const newDist = distances[current] + neighbor.weight;
+            
+            if (newDist < distances[neighbor.node]) {
+                distances[neighbor.node] = newDist;
+                previous[neighbor.node] = current;
+                pq.enqueue(neighbor.node, newDist);
+            }
+        }
+    }
+    
+    // Reconstruct path
+    const path = [];
+    let current = end;
+    while (current) {
+        path.unshift(current);
+        current = previous[current];
+    }
+    
+    return { distance: distances[end], path };
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="applications">
+                <h3>🌟 Real-World Applications</h3>
+                <div class="app-grid">
+                    <div class="app-card">
+                        <strong>🗺️ GPS Navigation</strong>
+                        <p>Google Maps, Waze - finding shortest routes in road networks</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🌐 Network Routing</strong>
+                        <p>Internet packet routing, finding optimal data paths</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>✈️ Flight Planning</strong>
+                        <p>Airlines finding cheapest routes between airports</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🚚 Logistics</strong>
+                        <p>Delivery optimization, supply chain management</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🎮 Game AI</strong>
+                        <p>Pathfinding for NPCs in video games</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>📞 Telecommunications</strong>
+                        <p>Call routing through phone networks</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🤖 Robotics</strong>
+                        <p>Robot navigation and obstacle avoidance</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>💰 Financial Networks</strong>
+                        <p>Currency exchange, finding best conversion rates</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison">
+                <h3>⚔️ Dijkstra vs Other Algorithms</h3>
+                <div class="comparison-table">
+                    <div class="comparison-row header">
+                        <div>Algorithm</div>
+                        <div>Best For</div>
+                        <div>Time Complexity</div>
+                        <div>Handles Negative Weights?</div>
+                    </div>
+                    <div class="comparison-row highlight">
+                        <div><strong>Dijkstra's</strong></div>
+                        <div>Single-source, non-negative weights</div>
+                        <div>O((V+E) log V)</div>
+                        <div>❌ No</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div><strong>Bellman-Ford</strong></div>
+                        <div>Negative weights allowed</div>
+                        <div>O(VE)</div>
+                        <div>✅ Yes</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div><strong>A*</strong></div>
+                        <div>With good heuristic available</div>
+                        <div>Varies (often better than Dijkstra)</div>
+                        <div>❌ No</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div><strong>BFS</strong></div>
+                        <div>Unweighted graphs only</div>
+                        <div>O(V+E)</div>
+                        <div>N/A</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Day 5 of #AlgorithmsInAction 🚀 | Built by <a href="https://www.linkedin.com/in/rohan-tyagi-333675202/" target="_blank">Rohan Tyagi</a></p>
+            <div class="footer-links">
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View on GitHub</a>
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View All Projects</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
