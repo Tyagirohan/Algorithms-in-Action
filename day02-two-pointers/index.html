@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Pointers Visualizer | Palindrome & Pair Finder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>👆👆 Two Pointers Technique</h1>
+                <p>Watch pointers work together to solve problems efficiently!</p>
+            </div>
+        </header>
+
+        <!-- Mode Selection -->
+        <div class="mode-selection">
+            <button class="mode-btn active" data-mode="palindrome">
+                <span class="mode-icon">🔄</span>
+                <span class="mode-title">Palindrome Checker</span>
+                <span class="mode-desc">Check if text reads same forwards & backwards</span>
+            </button>
+            <button class="mode-btn" data-mode="pair-sum">
+                <span class="mode-icon">🎯</span>
+                <span class="mode-title">Pair Sum Finder</span>
+                <span class="mode-desc">Find pairs that sum to target value</span>
+            </button>
+        </div>
+
+        <!-- Palindrome Section -->
+        <div class="feature-section active" id="palindrome-section">
+            <div class="control-panel">
+                <h2>🔄 Palindrome Checker</h2>
+                <p class="description">Enter any text to check if it's a palindrome. Watch the pointers move from both ends!</p>
+                
+                <div class="input-group">
+                    <input type="text" id="palindromeInput" placeholder="e.g., racecar, A man a plan a canal Panama" />
+                    <button id="checkPalindromeBtn" class="btn btn-primary">
+                        <span>Check Palindrome</span>
+                    </button>
+                </div>
+
+                <div class="quick-tests">
+                    <span class="quick-label">Quick Tests:</span>
+                    <button class="quick-btn" data-text="racecar">racecar</button>
+                    <button class="quick-btn" data-text="A man a plan a canal Panama">Panama</button>
+                    <button class="quick-btn" data-text="Was it a car or a cat I saw">Was it a car...</button>
+                    <button class="quick-btn" data-text="hello">hello ❌</button>
+                </div>
+
+                <div class="options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="ignoreSpaces" checked />
+                        <span>Ignore spaces and punctuation</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="ignoreCase" checked />
+                        <span>Ignore case</span>
+                    </label>
+                </div>
+
+                <div class="speed-control">
+                    <label for="palindromeSpeed">Animation Speed:</label>
+                    <input type="range" id="palindromeSpeed" min="100" max="1500" value="600" step="100">
+                    <span id="palindromeSpeedLabel">600ms</span>
+                </div>
+            </div>
+
+            <div class="visualization-area">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <span class="stat-label">Comparisons</span>
+                        <span class="stat-value" id="palindromeComparisons">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Status</span>
+                        <span class="stat-value" id="palindromeStatus">Ready</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Time Complexity</span>
+                        <span class="stat-value complexity">O(n)</span>
+                    </div>
+                </div>
+
+                <div class="visualization-box" id="palindromeViz">
+                    <div class="pointer-labels">
+                        <span class="pointer-indicator left">👈 Left</span>
+                        <span class="pointer-indicator right">Right 👉</span>
+                    </div>
+                    <div id="charContainer" class="char-container">
+                        <p class="empty-state">Enter text above to visualize</p>
+                    </div>
+                    <div class="result-message" id="palindromeResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pair Sum Section -->
+        <div class="feature-section" id="pair-sum-section">
+            <div class="control-panel">
+                <h2>🎯 Pair Sum Finder</h2>
+                <p class="description">Find all pairs in a sorted array that sum to a target value using two pointers!</p>
+                
+                <div class="input-group">
+                    <input type="text" id="arrayInput" placeholder="Enter sorted numbers (e.g., 1,2,3,4,5,6,7,8,9)" />
+                    <input type="number" id="targetSum" placeholder="Target sum" />
+                    <button id="findPairsBtn" class="btn btn-primary">
+                        <span>Find Pairs</span>
+                    </button>
+                </div>
+
+                <div class="quick-tests">
+                    <span class="quick-label">Quick Tests:</span>
+                    <button class="quick-btn-pair" data-array="1,2,3,4,5,6,7,8,9" data-target="10">Sum = 10</button>
+                    <button class="quick-btn-pair" data-array="2,4,6,8,10,12,14" data-target="16">Even Numbers</button>
+                    <button class="quick-btn-pair" data-array="1,3,5,7,9,11,13,15" data-target="20">Odd Numbers</button>
+                    <button class="quick-btn-pair" data-array="5,10,15,20,25,30" data-target="50">Multiples of 5</button>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="generateRandomBtn" class="btn btn-secondary">
+                        🎲 Generate Random Array
+                    </button>
+                    <button id="sortArrayBtn" class="btn btn-secondary">
+                        ↕️ Sort Array
+                    </button>
+                </div>
+
+                <div class="speed-control">
+                    <label for="pairSumSpeed">Animation Speed:</label>
+                    <input type="range" id="pairSumSpeed" min="100" max="1500" value="600" step="100">
+                    <span id="pairSumSpeedLabel">600ms</span>
+                </div>
+            </div>
+
+            <div class="visualization-area">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <span class="stat-label">Comparisons</span>
+                        <span class="stat-value" id="pairComparisons">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Pairs Found</span>
+                        <span class="stat-value" id="pairsFound">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Time Complexity</span>
+                        <span class="stat-value complexity">O(n)</span>
+                    </div>
+                </div>
+
+                <div class="visualization-box" id="pairSumViz">
+                    <div class="pointer-labels">
+                        <span class="pointer-indicator left">👈 Left</span>
+                        <span class="pointer-indicator right">Right 👉</span>
+                    </div>
+                    <div id="numberContainer" class="number-container">
+                        <p class="empty-state">Enter array above to visualize</p>
+                    </div>
+                    <div class="current-sum" id="currentSum"></div>
+                    <div class="pairs-list" id="pairsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algorithm Explanation -->
+        <div class="explanation-section">
+            <h2>🧠 Two Pointers Technique Explained</h2>
+            
+            <div class="technique-grid">
+                <div class="technique-card">
+                    <div class="technique-icon">🎯</div>
+                    <h3>What is Two Pointers?</h3>
+                    <p>A technique where we use two references (pointers) to iterate through a data structure, typically from opposite ends or at different speeds.</p>
+                </div>
+                
+                <div class="technique-card">
+                    <div class="technique-icon">⚡</div>
+                    <h3>Why Use It?</h3>
+                    <p>Reduces time complexity from O(n²) to O(n) for many problems. Eliminates nested loops by processing from both ends simultaneously.</p>
+                </div>
+                
+                <div class="technique-card">
+                    <div class="technique-icon">🔄</div>
+                    <h3>Common Patterns</h3>
+                    <p>Opposite directions (palindrome), same direction at different speeds (slow/fast), or meeting in middle (pair sum).</p>
+                </div>
+                
+                <div class="technique-card">
+                    <div class="technique-icon">📊</div>
+                    <h3>When to Use?</h3>
+                    <p>Sorted arrays, linked lists, strings, and problems requiring element pairing or symmetry checking.</p>
+                </div>
+            </div>
+
+            <div class="examples-section">
+                <h3>💡 Real-World Applications</h3>
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <strong>🔐 Password Validation</strong>
+                        <p>Check if password meets symmetry requirements</p>
+                    </div>
+                    <div class="example-card">
+                        <strong>💰 Budget Planning</strong>
+                        <p>Find expense pairs that match budget constraints</p>
+                    </div>
+                    <div class="example-card">
+                        <strong>🎮 Game Development</strong>
+                        <p>Collision detection between game objects</p>
+                    </div>
+                    <div class="example-card">
+                        <strong>📊 Data Analysis</strong>
+                        <p>Find matching data points in sorted datasets</p>
+                    </div>
+                    <div class="example-card">
+                        <strong>🔍 Search Optimization</strong>
+                        <p>Efficient searching in sorted collections</p>
+                    </div>
+                    <div class="example-card">
+                        <strong>🧬 DNA Sequencing</strong>
+                        <p>Finding complementary base pairs</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-examples">
+                <h3>📝 Code Templates</h3>
+                <div class="code-grid">
+                    <div class="code-block">
+                        <h4>Palindrome Check</h4>
+                        <pre><code>function isPalindrome(str) {
+    let left = 0;
+    let right = str.length - 1;
+    
+    while (left < right) {
+        if (str[left] !== str[right]) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}</code></pre>
+                    </div>
+                    
+                    <div class="code-block">
+                        <h4>Pair Sum Finder</h4>
+                        <pre><code>function findPairs(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    const pairs = [];
+    
+    while (left < right) {
+        const sum = arr[left] + arr[right];
+        if (sum === target) {
+            pairs.push([arr[left], arr[right]]);
+            left++;
+            right--;
+        } else if (sum < target) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+    return pairs;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Day 2 of #AlgorithmsInAction 🚀 | Built by <a href="https://www.linkedin.com/in/rohan-tyagi-333675202/" target="_blank">Rohan Tyagi</a></p>
+            <div class="footer-links">
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View on GitHub</a>
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View All Projects</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

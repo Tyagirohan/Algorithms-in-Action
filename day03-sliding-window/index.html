@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Window | Stock Market Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>📈 Stock Market Analyzer</h1>
+                <p>Master the Sliding Window technique through real-time stock analysis!</p>
+            </div>
+        </header>
+
+        <!-- Problem Selection -->
+        <div class="problem-selection">
+            <button class="problem-btn active" data-problem="max-profit">
+                <span class="problem-icon">💰</span>
+                <span class="problem-title">Max Profit in K Days</span>
+                <span class="problem-desc">Find the best consecutive days to maximize profit</span>
+            </button>
+            <button class="problem-btn" data-problem="longest-gain">
+                <span class="problem-icon">📊</span>
+                <span class="problem-title">Longest Gain Streak</span>
+                <span class="problem-desc">Find the longest period of consecutive gains</span>
+            </button>
+            <button class="problem-btn" data-problem="max-subarray">
+                <span class="problem-icon">🎯</span>
+                <span class="problem-title">Maximum Subarray Sum</span>
+                <span class="problem-desc">Find the window with the largest sum</span>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h2>⚙️ Controls</h2>
+                
+                <div class="input-section">
+                    <label for="stockPrices">Stock Prices (comma-separated):</label>
+                    <input type="text" id="stockPrices" placeholder="e.g., 10,15,12,20,18,25,22,30" />
+                </div>
+
+                <div class="input-section" id="windowSizeSection">
+                    <label for="windowSize">Window Size (number of days):</label>
+                    <input type="number" id="windowSize" placeholder="e.g., 3" min="2" value="3" />
+                </div>
+
+                <div class="quick-presets">
+                    <span class="preset-label">Quick Presets:</span>
+                    <button class="preset-btn" data-prices="10,15,12,20,18,25,22,30" data-window="3">Bull Market</button>
+                    <button class="preset-btn" data-prices="50,45,48,42,40,38,35,32" data-window="3">Bear Market</button>
+                    <button class="preset-btn" data-prices="20,22,18,25,21,24,19,28,26,30" data-window="4">Volatile</button>
+                    <button class="preset-btn" data-prices="100,102,101,105,103,110,108,115,112,120" data-window="5">Steady Growth</button>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="analyzeBtn" class="btn btn-primary">
+                        <span>📊 Analyze</span>
+                    </button>
+                    <button id="generateRandomBtn" class="btn btn-secondary">
+                        <span>🎲 Random Data</span>
+                    </button>
+                    <button id="resetBtn" class="btn btn-secondary">
+                        <span>🔄 Reset</span>
+                    </button>
+                </div>
+
+                <div class="speed-control">
+                    <label for="animationSpeed">Animation Speed:</label>
+                    <input type="range" id="animationSpeed" min="100" max="2000" value="800" step="100">
+                    <span id="speedLabel">800ms</span>
+                </div>
+
+                <div class="stats-panel">
+                    <div class="stat-item">
+                        <span class="stat-label">Windows Checked:</span>
+                        <span class="stat-value" id="windowsChecked">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Current Window Sum:</span>
+                        <span class="stat-value" id="currentSum">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Best Result:</span>
+                        <span class="stat-value" id="bestResult">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Time Complexity:</span>
+                        <span class="stat-value complexity">O(n)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization Panel -->
+            <div class="visualization-panel">
+                <h2>📊 Visualization</h2>
+                
+                <div class="chart-container">
+                    <canvas id="stockChart"></canvas>
+                </div>
+
+                <div class="window-indicator">
+                    <div class="window-info" id="windowInfo">
+                        <p>Configure settings and click "Analyze" to start</p>
+                    </div>
+                </div>
+
+                <div class="data-bars" id="dataBars">
+                    <p class="empty-message">Enter stock prices to visualize</p>
+                </div>
+
+                <div class="result-box" id="resultBox">
+                    <div class="result-content" id="resultContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algorithm Explanation -->
+        <div class="explanation-section">
+            <h2>🧠 Sliding Window Technique Explained</h2>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">🪟</div>
+                    <h3>What is Sliding Window?</h3>
+                    <p>A technique that maintains a "window" of elements and slides it across the data structure, updating calculations efficiently without recalculating from scratch.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">⚡</div>
+                    <h3>Why Use It?</h3>
+                    <p>Reduces time complexity from O(n×k) to O(n) by reusing calculations. Instead of recalculating the entire window, we subtract the left element and add the right element.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">🎯</div>
+                    <h3>How It Works</h3>
+                    <p>1. Calculate initial window<br>2. Slide window one position<br>3. Remove left, add right<br>4. Update result if better<br>5. Repeat until end</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">📐</div>
+                    <h3>Window Types</h3>
+                    <p><strong>Fixed:</strong> Window size stays constant<br><strong>Variable:</strong> Window grows/shrinks based on conditions</p>
+                </div>
+            </div>
+
+            <div class="algorithm-comparison">
+                <h3>⚔️ Brute Force vs Sliding Window</h3>
+                <div class="comparison-table">
+                    <div class="comparison-row header">
+                        <div>Approach</div>
+                        <div>Time Complexity</div>
+                        <div>Operations (n=1000, k=100)</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div><strong>Brute Force</strong><br>Recalculate every window</div>
+                        <div><code>O(n × k)</code></div>
+                        <div>~90,000 operations</div>
+                    </div>
+                    <div class="comparison-row highlight">
+                        <div><strong>Sliding Window</strong><br>Reuse calculations</div>
+                        <div><code>O(n)</code></div>
+                        <div>~1,000 operations<br><span class="speedup">90× faster!</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-examples">
+                <h3>💻 Code Implementation</h3>
+                <div class="code-tabs">
+                    <div class="code-block">
+                        <h4>❌ Brute Force - O(n×k)</h4>
+                        <pre><code>function maxSumBruteForce(arr, k) {
+    let maxSum = -Infinity;
+    
+    // Check every possible window
+    for (let i = 0; i <= arr.length - k; i++) {
+        let windowSum = 0;
+        
+        // Calculate sum for this window
+        for (let j = i; j < i + k; j++) {
+            windowSum += arr[j];
+        }
+        
+        maxSum = Math.max(maxSum, windowSum);
+    }
+    
+    return maxSum;
+}
+// For n=1000, k=100: ~90,000 operations</code></pre>
+                    </div>
+                    
+                    <div class="code-block">
+                        <h4>✅ Sliding Window - O(n)</h4>
+                        <pre><code>function maxSumSlidingWindow(arr, k) {
+    // Calculate first window
+    let windowSum = 0;
+    for (let i = 0; i < k; i++) {
+        windowSum += arr[i];
+    }
+    
+    let maxSum = windowSum;
+    
+    // Slide the window
+    for (let i = k; i < arr.length; i++) {
+        windowSum += arr[i] - arr[i - k];
+        maxSum = Math.max(maxSum, windowSum);
+    }
+    
+    return maxSum;
+}
+// For n=1000, k=100: ~1,000 operations</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="applications-section">
+                <h3>🌟 Real-World Applications</h3>
+                <div class="applications-grid">
+                    <div class="app-card">
+                        <strong>📈 Financial Analysis</strong>
+                        <p>Moving averages, profit windows, risk analysis</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🌡️ Weather Forecasting</strong>
+                        <p>Average temperature over time periods</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🎮 Game Analytics</strong>
+                        <p>Player performance over game sessions</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>📱 Network Traffic</strong>
+                        <p>Data throughput analysis over time windows</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🏃 Fitness Tracking</strong>
+                        <p>Running pace over distance intervals</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🔍 String Algorithms</strong>
+                        <p>Substring search, anagram finding</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>📊 Sales Analysis</strong>
+                        <p>Revenue trends over time periods</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🚗 Traffic Monitoring</strong>
+                        <p>Average speed over road segments</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="problem-patterns">
+                <h3>🎯 Common Problem Patterns</h3>
+                <div class="patterns-grid">
+                    <div class="pattern-card">
+                        <h4>Fixed Window</h4>
+                        <ul>
+                            <li>Maximum sum of k consecutive elements</li>
+                            <li>Average of all subarrays of size k</li>
+                            <li>Find k-length substring</li>
+                        </ul>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>Variable Window</h4>
+                        <ul>
+                            <li>Smallest subarray with sum ≥ target</li>
+                            <li>Longest substring without repeating chars</li>
+                            <li>Minimum window substring</li>
+                        </ul>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>Two Pointers + Window</h4>
+                        <ul>
+                            <li>Container with most water</li>
+                            <li>Fruits into baskets</li>
+                            <li>Longest subarray with k distinct</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Day 3 of #AlgorithmsInAction 🚀 | Built by <a href="https://www.linkedin.com/in/rohan-tyagi-333675202/" target="_blank">Rohan Tyagi</a></p>
+            <div class="footer-links">
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View on GitHub</a>
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View All Projects</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
