@@ -32,7 +32,7 @@ A visual comparison of Binary Search vs Linear Search with animated book library
 - ✅ Visual pointer tracking
 - ✅ Color-coded search states
 
-**Live Demo** | [Code](./day01-binary-search)
+**[Live Demo](https://tyagirohan.github.io/Algorithms-in-Action/day01-binary-search/)** | [Code](./day01-binary-search)
 
 **Tech**: Vanilla JavaScript, HTML5, CSS3  
 **Time Complexity**: O(log n)  
@@ -51,7 +51,7 @@ Interactive dual-mode visualizer showing two pointers technique for palindrome c
 - ✅ Step-by-step explanations
 - ✅ Performance comparison with brute force
 
-**Live Demo** | [Code](./day02-two-pointers)
+**[Live Demo](https://tyagirohan.github.io/Algorithms-in-Action/day02-two-pointers/)** | [Code](./day02-two-pointers)
 
 **Tech**: Vanilla JavaScript, HTML5, CSS3  
 **Time Complexity**: O(n)  
@@ -70,7 +70,7 @@ Triple-mode stock analysis demonstrating sliding window for maximum profit, long
 - ✅ Preset scenarios (Bull/Bear/Volatile markets)
 - ✅ Performance comparison: O(n×k) → O(n)
 
-**Live Demo** | [Code](./day03-sliding-window)
+**[Live Demo](https://tyagirohan.github.io/Algorithms-in-Action/day03-sliding-window/)** | [Code](./day03-sliding-window)
 
 **Tech**: Vanilla JavaScript, HTML5, CSS3, Canvas API  
 **Time Complexity**: O(n)  
@@ -89,7 +89,7 @@ Epic sorting visualizer with merge sort deep dive and head-to-head algorithm com
 - ✅ Real-time statistics for all algorithms
 - ✅ Animated bar charts with color coding
 
-**Live Demo** | [Code](./day04-merge-sort)
+**[Live Demo](https://tyagirohan.github.io/Algorithms-in-Action/day04-merge-sort/)** | [Code](./day04-merge-sort)
 
 **Tech**: Vanilla JavaScript, HTML5, CSS3  
 **Time Complexity**: O(n log n)  
@@ -108,7 +108,7 @@ Interactive graph-based city network with shortest path visualization using Dijk
 - ✅ Real-time distance table updates
 - ✅ Visual path highlighting and animations
 
-**Live Demo** | [Code](./day05-dijkstra)
+**[Live Demo](https://tyagirohan.github.io/Algorithms-in-Action/day05-dijkstra/)** | [Code](./day05-dijkstra)
 
 **Tech**: Vanilla JavaScript, HTML5, CSS3, Canvas API  
 **Time Complexity**: O((V+E) log V)  
@@ -130,7 +130,7 @@ Comprehensive DP visualizer featuring three classic problems: Coin Change, 0/1 K
 - ✅ Real-time performance comparison
 - ✅ Solution reconstruction with detailed results
 
-**Live Demo** | [Code](./day06-dynamic-programming)
+**[Live Demo](https://tyagirohan.github.io/Algorithms-in-Action/day06-dynamic-programming/)** | [Code](./day06-dynamic-programming)
 
 **Tech**: Vanilla JavaScript, HTML5, CSS3  
 **Time Complexity**: O(n×m) typically, transforms O(2ⁿ) → O(n)!  
