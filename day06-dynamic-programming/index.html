@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Programming | Smart Vending Machine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>💰 Smart Vending Machine</h1>
+                <p>Master Dynamic Programming through real-world optimization!</p>
+            </div>
+        </header>
+
+        <!-- Problem Selection -->
+        <div class="problem-selection">
+            <button class="problem-btn active" data-problem="coin-change">
+                <span class="problem-icon">🪙</span>
+                <span class="problem-title">Coin Change</span>
+                <span class="problem-desc">Minimum coins needed to make change</span>
+            </button>
+            <button class="problem-btn" data-problem="knapsack">
+                <span class="problem-icon">🎒</span>
+                <span class="problem-title">0/1 Knapsack</span>
+                <span class="problem-desc">Maximize value within weight limit</span>
+            </button>
+            <button class="problem-btn" data-problem="fibonacci">
+                <span class="problem-icon">🔢</span>
+                <span class="problem-title">Fibonacci</span>
+                <span class="problem-desc">Classic DP with memoization</span>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-layout">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h2>⚙️ Controls</h2>
+                
+                <!-- Coin Change Controls -->
+                <div class="problem-controls" id="coinChangeControls">
+                    <div class="control-section">
+                        <h3>💵 Target Amount</h3>
+                        <input type="number" id="targetAmount" placeholder="Enter amount (e.g., 63)" value="63" min="1" />
+                    </div>
+
+                    <div class="control-section">
+                        <h3>🪙 Available Coins</h3>
+                        <div class="coins-input">
+                            <input type="text" id="coinValues" placeholder="e.g., 1,5,10,25" value="1,5,10,25" />
+                            <small>Comma-separated values</small>
+                        </div>
+                    </div>
+
+                    <div class="preset-coins">
+                        <span class="preset-label">Quick Presets:</span>
+                        <button class="preset-coin-btn" data-coins="1,5,10,25">US Coins</button>
+                        <button class="preset-coin-btn" data-coins="1,2,5,10,20,50">Euro Coins</button>
+                        <button class="preset-coin-btn" data-coins="1,3,4">Custom</button>
+                    </div>
+
+                    <button id="solveCoinBtn" class="btn btn-primary">💡 Find Solution</button>
+                </div>
+
+                <!-- Knapsack Controls -->
+                <div class="problem-controls hidden" id="knapsackControls">
+                    <div class="control-section">
+                        <h3>⚖️ Knapsack Capacity</h3>
+                        <input type="number" id="knapsackCapacity" placeholder="Max weight (e.g., 50)" value="50" min="1" />
+                    </div>
+
+                    <div class="control-section">
+                        <h3>📦 Items</h3>
+                        <div class="items-list" id="itemsList">
+                            <div class="item-row">
+                                <input type="text" placeholder="Name" value="Laptop" />
+                                <input type="number" placeholder="Value" value="1000" min="1" />
+                                <input type="number" placeholder="Weight" value="30" min="1" />
+                                <button class="remove-item-btn">✖</button>
+                            </div>
+                        </div>
+                        <button id="addItemBtn" class="btn btn-secondary">➕ Add Item</button>
+                    </div>
+
+                    <div class="preset-items">
+                        <span class="preset-label">Quick Presets:</span>
+                        <button class="preset-item-btn" data-preset="tech">Tech Items</button>
+                        <button class="preset-item-btn" data-preset="jewelry">Jewelry</button>
+                        <button class="preset-item-btn" data-preset="survival">Survival Kit</button>
+                    </div>
+
+                    <button id="solveKnapsackBtn" class="btn btn-primary">💡 Find Solution</button>
+                </div>
+
+                <!-- Fibonacci Controls -->
+                <div class="problem-controls hidden" id="fibonacciControls">
+                    <div class="control-section">
+                        <h3>🔢 Fibonacci Number</h3>
+                        <input type="number" id="fibNumber" placeholder="Enter n (e.g., 20)" value="20" min="0" max="40" />
+                        <small>Calculate F(n) where n ≤ 40</small>
+                    </div>
+
+                    <div class="approach-selection">
+                        <h3>📊 Approach</h3>
+                        <label class="radio-label">
+                            <input type="radio" name="fibApproach" value="recursive" checked />
+                            <span>Recursive (Slow)</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="fibApproach" value="memoized" />
+                            <span>Memoized (DP Top-Down)</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="fibApproach" value="tabulation" />
+                            <span>Tabulation (DP Bottom-Up)</span>
+                        </label>
+                    </div>
+
+                    <button id="solveFibBtn" class="btn btn-primary">💡 Calculate</button>
+                </div>
+
+                <!-- Speed Control -->
+                <div class="speed-control">
+                    <label for="animationSpeed">Animation Speed:</label>
+                    <input type="range" id="animationSpeed" min="100" max="2000" value="500" step="100">
+                    <span id="speedLabel">500ms</span>
+                </div>
+
+                <!-- Statistics -->
+                <div class="stats-panel">
+                    <h3>📊 Statistics</h3>
+                    <div class="stat-item">
+                        <span>Subproblems Solved:</span>
+                        <span id="subproblemsCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Time Complexity:</span>
+                        <span id="timeComplexity">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Space Complexity:</span>
+                        <span id="spaceComplexity">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Computation Time:</span>
+                        <span id="computeTime">0ms</span>
+                    </div>
+                </div>
+
+                <!-- Solution Display -->
+                <div class="solution-box hidden" id="solutionBox">
+                    <h3>✅ Solution Found!</h3>
+                    <div id="solutionDetails"></div>
+                </div>
+            </div>
+
+            <!-- Visualization Panel -->
+            <div class="visualization-panel">
+                <h2 id="vizTitle">💰 Coin Change Visualization</h2>
+                
+                <!-- DP Table -->
+                <div class="dp-table-container">
+                    <h3>📋 DP Table</h3>
+                    <div id="dpTable" class="dp-table">
+                        <p class="empty-message">Configure problem and click solve to visualize</p>
+                    </div>
+                </div>
+
+                <!-- Recursion Tree (for Fibonacci) -->
+                <div class="recursion-tree-container hidden" id="recursionTreeContainer">
+                    <h3>🌲 Recursion Tree</h3>
+                    <div id="recursionTree" class="recursion-tree">
+                        <p class="empty-message">Tree will appear during calculation</p>
+                    </div>
+                </div>
+
+                <!-- Step Description -->
+                <div class="step-description">
+                    <h3>📝 Current Step</h3>
+                    <p id="stepDesc">Waiting to start...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algorithm Explanation -->
+        <div class="explanation-section">
+            <h2>🧠 Dynamic Programming Explained</h2>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">🎯</div>
+                    <h3>What is DP?</h3>
+                    <p>Dynamic Programming solves complex problems by breaking them into simpler subproblems, solving each once, and storing solutions to avoid redundant calculations.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">🔑</div>
+                    <h3>Key Properties</h3>
+                    <p><strong>1. Optimal Substructure:</strong> Optimal solution contains optimal solutions to subproblems.<br><strong>2. Overlapping Subproblems:</strong> Same subproblems solved multiple times.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">📊</div>
+                    <h3>Two Approaches</h3>
+                    <p><strong>Top-Down (Memoization):</strong> Recursive with caching.<br><strong>Bottom-Up (Tabulation):</strong> Iterative, building from base cases.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-icon">⚡</div>
+                    <h3>Why Use DP?</h3>
+                    <p>Transforms exponential time algorithms into polynomial time. Example: Fibonacci from O(2ⁿ) to O(n)!</p>
+                </div>
+            </div>
+
+            <div class="problems-explained">
+                <h3>🎓 Problem Breakdowns</h3>
+                
+                <div class="problem-explanation">
+                    <h4>🪙 Coin Change Problem</h4>
+                    <p><strong>Problem:</strong> Given coins of certain denominations and a target amount, find the minimum number of coins needed to make that amount.</p>
+                    <div class="example-box">
+                        <strong>Example:</strong> Amount = 11, Coins = [1, 5, 6]<br>
+                        <strong>Solution:</strong> 6 + 5 = 2 coins (optimal)<br>
+                        Not: 1+1+1+1+1+1+1+1+1+1+1 = 11 coins
+                    </div>
+                    <div class="formula-box">
+                        <strong>Recurrence:</strong><br>
+                        dp[i] = min(dp[i], dp[i - coin] + 1) for each coin ≤ i
+                    </div>
+                </div>
+
+                <div class="problem-explanation">
+                    <h4>🎒 0/1 Knapsack Problem</h4>
+                    <p><strong>Problem:</strong> Given items with values and weights, and a knapsack with weight capacity, maximize the total value without exceeding capacity.</p>
+                    <div class="example-box">
+                        <strong>Example:</strong> Capacity = 50kg<br>
+                        Items: [Laptop: $1000, 30kg], [Camera: $800, 20kg]<br>
+                        <strong>Solution:</strong> Take both = $1800, 50kg
+                    </div>
+                    <div class="formula-box">
+                        <strong>Recurrence:</strong><br>
+                        dp[i][w] = max(dp[i-1][w], value[i] + dp[i-1][w-weight[i]])
+                    </div>
+                </div>
+
+                <div class="problem-explanation">
+                    <h4>🔢 Fibonacci Sequence</h4>
+                    <p><strong>Problem:</strong> Calculate the nth Fibonacci number where F(n) = F(n-1) + F(n-2).</p>
+                    <div class="example-box">
+                        <strong>Sequence:</strong> 0, 1, 1, 2, 3, 5, 8, 13, 21, 34...<br>
+                        <strong>Without DP:</strong> O(2ⁿ) - Massive redundancy!<br>
+                        <strong>With DP:</strong> O(n) - Calculate each value once
+                    </div>
+                    <div class="formula-box">
+                        <strong>Recurrence:</strong><br>
+                        F(n) = F(n-1) + F(n-2), F(0) = 0, F(1) = 1
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-examples">
+                <h3>💻 Code Implementations</h3>
+                
+                <div class="code-tabs">
+                    <div class="code-block">
+                        <h4>Coin Change (Bottom-Up)</h4>
+                        <pre><code>function coinChange(coins, amount) {
+    const dp = Array(amount + 1).fill(Infinity);
+    dp[0] = 0; // Base case
+    
+    // Build table from bottom up
+    for (let i = 1; i <= amount; i++) {
+        for (let coin of coins) {
+            if (coin <= i) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+    
+    return dp[amount] === Infinity ? -1 : dp[amount];
+}
+
+// Time: O(amount × coins.length)
+// Space: O(amount)</code></pre>
+                    </div>
+
+                    <div class="code-block">
+                        <h4>Fibonacci (Memoization)</h4>
+                        <pre><code>function fib(n, memo = {}) {
+    if (n in memo) return memo[n];
+    if (n <= 1) return n;
+    
+    memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
+    return memo[n];
+}
+
+// Time: O(n) - each value calculated once
+// Space: O(n) - memo storage + call stack</code></pre>
+                    </div>
+
+                    <div class="code-block">
+                        <h4>Knapsack (Bottom-Up)</h4>
+                        <pre><code>function knapsack(values, weights, capacity) {
+    const n = values.length;
+    const dp = Array(n + 1).fill(0)
+        .map(() => Array(capacity + 1).fill(0));
+    
+    for (let i = 1; i <= n; i++) {
+        for (let w = 0; w <= capacity; w++) {
+            if (weights[i-1] <= w) {
+                dp[i][w] = Math.max(
+                    dp[i-1][w], // Don't take item
+                    values[i-1] + dp[i-1][w-weights[i-1]] // Take item
+                );
+            } else {
+                dp[i][w] = dp[i-1][w];
+            }
+        }
+    }
+    
+    return dp[n][capacity];
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="applications">
+                <h3>🌟 Real-World Applications</h3>
+                <div class="app-grid">
+                    <div class="app-card">
+                        <strong>💰 Finance</strong>
+                        <p>Portfolio optimization, currency exchange arbitrage</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🧬 Bioinformatics</strong>
+                        <p>DNA sequence alignment, protein folding prediction</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>📝 Text Processing</strong>
+                        <p>Edit distance, spell checking, diff algorithms</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🎮 Game Theory</strong>
+                        <p>Optimal strategy calculation, AI decision making</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🏭 Manufacturing</strong>
+                        <p>Resource allocation, cutting stock problems</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>📱 Mobile Apps</strong>
+                        <p>Auto-correct, predictive text, route optimization</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🚚 Logistics</strong>
+                        <p>Package optimization, warehouse management</p>
+                    </div>
+                    <div class="app-card">
+                        <strong>🤖 AI/ML</strong>
+                        <p>Reinforcement learning, Markov decision processes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison">
+                <h3>⚔️ DP vs Other Approaches</h3>
+                <div class="comparison-table">
+                    <div class="comparison-row header">
+                        <div>Approach</div>
+                        <div>Time Complexity</div>
+                        <div>Space Complexity</div>
+                        <div>When to Use</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div><strong>Naive Recursion</strong></div>
+                        <div>Often O(2ⁿ)</div>
+                        <div>O(n) call stack</div>
+                        <div>Never for production!</div>
+                    </div>
+                    <div class="comparison-row highlight">
+                        <div><strong>DP Memoization</strong></div>
+                        <div>O(n×m) typically</div>
+                        <div>O(n×m) + call stack</div>
+                        <div>Top-down, easier to think</div>
+                    </div>
+                    <div class="comparison-row highlight">
+                        <div><strong>DP Tabulation</strong></div>
+                        <div>O(n×m) typically</div>
+                        <div>O(n×m)</div>
+                        <div>Bottom-up, more efficient</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div><strong>Greedy</strong></div>
+                        <div>O(n log n)</div>
+                        <div>O(1) often</div>
+                        <div>When greedy choice works</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Day 6 of #AlgorithmsInAction 🚀 | Built by <a href="https://www.linkedin.com/in/rohan-tyagi-333675202/" target="_blank">Rohan Tyagi</a></p>
+            <div class="footer-links">
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View on GitHub</a>
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View All Projects</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
