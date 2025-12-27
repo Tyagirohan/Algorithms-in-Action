@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-World Applications | Week 3 DSA Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .badge-info {
+            background: #4299e1;
+            color: white;
+        }
+
+        .description {
+            color: #4a5568;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .project-icon {
+            font-size: 3rem;
+        }
+
+        .project-title {
+            flex: 1;
+        }
+
+        .project-title h2 {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .project-title .algorithm {
+            font-size: 0.9rem;
+            color: #718096;
+            font-style: italic;
+        }
+
+        .project-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .features-list li {
+            padding: 5px 0;
+            color: #48bb78;
+            font-size: 0.9rem;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-section h2 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #4a5568;
+            font-size: 1rem;
+        }
+
+        .series-links {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .series-links h3 {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .series-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .series-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .series-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💼 Real-World Applications</h1>
+            <p class="subtitle">Week 3 of DSA Learning Journey</p>
+            <div class="badges">
+                <span class="badge badge-success">6/6 Projects Complete</span>
+                <span class="badge badge-info">Week 3</span>
+            </div>
+            <p class="description">
+                Building actual useful tools with algorithms! Each project showcases how algorithms power 
+                the tools we use every day - from Git to Google Search to AWS.
+            </p>
+        </header>
+
+        <div class="projects-grid">
+            <!-- Day 1 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon">📝</div>
+                    <div class="project-title">
+                        <h2>Code Diff Visualizer</h2>
+                        <p class="algorithm">LCS + Edit Distance</p>
+                    </div>
+                </div>
+                <p class="project-description">
+                    See code changes like Git - with side-by-side, unified, and algorithm visualization!
+                </p>
+                <ul class="features-list">
+                    <li>✅ Git-style diff views</li>
+                    <li>✅ LCS algorithm visualization</li>
+                    <li>✅ Edit distance calculation</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="./day01-code-diff/" class="btn btn-primary">🚀 Live Demo</a>
+                    <a href="https://github.com/Tyagirohan/Real-World-Applications/tree/main/day01-code-diff" target="_blank" class="btn btn-secondary">📖 Code</a>
+                </div>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon">🔍</div>
+                    <div class="project-title">
+                        <h2>Autocomplete Engine</h2>
+                        <p class="algorithm">Trie (Prefix Tree)</p>
+                    </div>
+                </div>
+                <p class="project-description">
+                    Real-time search suggestions like Google - type and see instant results!
+                </p>
+                <ul class="features-list">
+                    <li>✅ Instant suggestions (O(k))</li>
+                    <li>✅ Frequency-based ranking</li>
+                    <li>✅ Trie visualization</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="./day02-autocomplete/" class="btn btn-primary">🚀 Live Demo</a>
+                    <a href="https://github.com/Tyagirohan/Real-World-Applications/tree/main/day02-autocomplete" target="_blank" class="btn btn-secondary">📖 Code</a>
+                </div>
+            </div>
+
+            <!-- Day 3 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon">🎮</div>
+                    <div class="project-title">
+                        <h2>Maze Solver</h2>
+                        <p class="algorithm">DFS/BFS/A*</p>
+                    </div>
+                </div>
+                <p class="project-description">
+                    Interactive maze generator and pathfinding visualizer - watch algorithms race!
+                </p>
+                <ul class="features-list">
+                    <li>✅ Perfect maze generation</li>
+                    <li>✅ Three solving algorithms</li>
+                    <li>✅ Algorithm race mode</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="./day03-maze-solver/" class="btn btn-primary">🚀 Live Demo</a>
+                    <a href="https://github.com/Tyagirohan/Real-World-Applications/tree/main/day03-maze-solver" target="_blank" class="btn btn-secondary">📖 Code</a>
+                </div>
+            </div>
+
+            <!-- Day 4 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon">🧮</div>
+                    <div class="project-title">
+                        <h2>Expression Evaluator</h2>
+                        <p class="algorithm">Shunting Yard</p>
+                    </div>
+                </div>
+                <p class="project-description">
+                    Scientific calculator with step-by-step visualization of expression parsing!
+                </p>
+                <ul class="features-list">
+                    <li>✅ Infix to Postfix conversion</li>
+                    <li>✅ Scientific functions</li>
+                    <li>✅ Step-by-step visualization</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="./day04-expression-evaluator/" class="btn btn-primary">🚀 Live Demo</a>
+                    <a href="https://github.com/Tyagirohan/Real-World-Applications/tree/main/day04-expression-evaluator" target="_blank" class="btn btn-secondary">📖 Code</a>
+                </div>
+            </div>
+
+            <!-- Day 5 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon">🖼️</div>
+                    <div class="project-title">
+                        <h2>Image Compressor</h2>
+                        <p class="algorithm">Huffman Coding</p>
+                    </div>
+                </div>
+                <p class="project-description">
+                    Visualize data compression with Huffman's optimal encoding algorithm!
+                </p>
+                <ul class="features-list">
+                    <li>✅ Text & image compression</li>
+                    <li>✅ Huffman tree visualization</li>
+                    <li>✅ Download compressed files</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="./day05-image-compressor/" class="btn btn-primary">🚀 Live Demo</a>
+                    <a href="https://github.com/Tyagirohan/Real-World-Applications/tree/main/day05-image-compressor" target="_blank" class="btn btn-secondary">📖 Code</a>
+                </div>
+            </div>
+
+            <!-- Day 6 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon">⚖️</div>
+                    <div class="project-title">
+                        <h2>Load Balancer</h2>
+                        <p class="algorithm">Consistent Hashing</p>
+                    </div>
+                </div>
+                <p class="project-description">
+                    Visualize Consistent Hashing - the algorithm behind AWS, CDNs, and distributed systems!
+                </p>
+                <ul class="features-list">
+                    <li>✅ Hash ring visualization</li>
+                    <li>✅ Virtual nodes</li>
+                    <li>✅ Rebalancing comparison</li>
+                </ul>
+                <div class="project-actions">
+                    <a href="./day06-load-balancer/" class="btn btn-primary">🚀 Live Demo</a>
+                    <a href="https://github.com/Tyagirohan/Real-World-Applications/tree/main/day06-load-balancer" target="_blank" class="btn btn-secondary">📖 Code</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>📊 Series Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Projects Complete</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">8+</div>
+                    <div class="stat-label">Algorithms Implemented</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2500+</div>
+                    <div class="stat-label">Lines of Code</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Vanilla JS</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="series-links">
+            <h3>🔗 Other Series in the Journey</h3>
+            <div class="series-buttons">
+                <a href="https://github.com/Tyagirohan/build-with-dsa" target="_blank" class="series-btn">
+                    📚 Week 1: Build with DSA
+                </a>
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank" class="series-btn">
+                    ⚡ Week 2: Algorithms in Action
+                </a>
+                <a href="https://github.com/Tyagirohan/Real-World-Applications" target="_blank" class="series-btn">
+                    📖 View Source Code
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <p>Built with ❤️ by <a href="https://www.linkedin.com/in/rohan-tyagi-333675202/" target="_blank">Rohan Tyagi</a></p>
+            <p>Building in public, one algorithm at a time 🚀</p>
+        </footer>
+    </div>
+</body>
+</html>
+
