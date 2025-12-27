@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Library Search | Binary Search Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>📚 Smart Library Search</h1>
+                <p>Watch Binary Search find books in milliseconds!</p>
+            </div>
+        </header>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="search-section">
+                <input type="text" id="searchInput" placeholder="Enter book ID (1-100)" />
+                <button id="searchBtn" class="btn btn-primary">
+                    <span>🔍 Search</span>
+                </button>
+                <button id="resetBtn" class="btn btn-secondary">
+                    <span>🔄 Reset</span>
+                </button>
+            </div>
+
+            <div class="algorithm-select">
+                <label>Compare Algorithms:</label>
+                <div class="toggle-buttons">
+                    <button id="binaryBtn" class="toggle-btn active">Binary Search</button>
+                    <button id="linearBtn" class="toggle-btn">Linear Search</button>
+                    <button id="bothBtn" class="toggle-btn">Both (Race!)</button>
+                </div>
+            </div>
+
+            <div class="speed-control">
+                <label for="speedSlider">Animation Speed:</label>
+                <input type="range" id="speedSlider" min="100" max="2000" value="800" step="100">
+                <span id="speedLabel">800ms</span>
+            </div>
+        </div>
+
+        <!-- Stats Display -->
+        <div class="stats-container">
+            <div class="stat-card binary-stat">
+                <h3>Binary Search</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Steps:</span>
+                    <span class="stat-value" id="binarySteps">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Time Complexity:</span>
+                    <span class="stat-value complexity">O(log n)</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Status:</span>
+                    <span class="stat-value" id="binaryStatus">Ready</span>
+                </div>
+            </div>
+
+            <div class="stat-card linear-stat">
+                <h3>Linear Search</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Steps:</span>
+                    <span class="stat-value" id="linearSteps">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Time Complexity:</span>
+                    <span class="stat-value complexity">O(n)</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Status:</span>
+                    <span class="stat-value" id="linearStatus">Ready</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualization Area -->
+        <div class="visualization-section">
+            <div class="search-info" id="searchInfo">
+                <p>🎯 Search for any book ID between 1-100 to see binary search in action!</p>
+            </div>
+
+            <!-- Binary Search Visualization -->
+            <div class="search-container" id="binaryContainer">
+                <h3 class="search-title">📖 Binary Search Visualization</h3>
+                <div class="pointer-labels">
+                    <span class="pointer-label left-label">👈 Left</span>
+                    <span class="pointer-label mid-label">🎯 Middle</span>
+                    <span class="pointer-label right-label">👉 Right</span>
+                </div>
+                <div class="books-shelf" id="binaryShelf"></div>
+                <div class="search-message" id="binaryMessage"></div>
+            </div>
+
+            <!-- Linear Search Visualization -->
+            <div class="search-container hidden" id="linearContainer">
+                <h3 class="search-title">📚 Linear Search Visualization</h3>
+                <div class="pointer-labels">
+                    <span class="pointer-label current-label">👆 Current</span>
+                </div>
+                <div class="books-shelf" id="linearShelf"></div>
+                <div class="search-message" id="linearMessage"></div>
+            </div>
+        </div>
+
+        <!-- Algorithm Explanation -->
+        <div class="explanation-section">
+            <h2>🧠 How Binary Search Works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Start in the Middle</h3>
+                    <p>Compare the target with the middle element of the sorted array</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Eliminate Half</h3>
+                    <p>If target is less than middle, search left half. Otherwise, search right half</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Repeat</h3>
+                    <p>Keep dividing the search space in half until the target is found</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Found or Not</h3>
+                    <p>Either find the element or determine it doesn't exist in O(log n) time</p>
+                </div>
+            </div>
+
+            <div class="complexity-info">
+                <h3>⚡ Why Binary Search is Faster</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <strong>Linear Search:</strong> O(n) - Checks every element sequentially
+                        <div class="example">Example: 100 books → up to 100 checks</div>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>Binary Search:</strong> O(log n) - Cuts search space in half each time
+                        <div class="example">Example: 100 books → max 7 checks</div>
+                    </div>
+                </div>
+                <p class="note">⚠️ <strong>Requirement:</strong> Array must be sorted for binary search to work!</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Day 1 of #AlgorithmsInAction 🚀 | Built by <a href="https://www.linkedin.com/in/rohan-tyagi-333675202/" target="_blank">Rohan Tyagi</a></p>
+            <div class="footer-links">
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View on GitHub</a>
+                <a href="https://github.com/Tyagirohan/Algorithms-in-Action" target="_blank">View All Projects</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
